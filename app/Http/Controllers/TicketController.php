@@ -49,7 +49,8 @@ class TicketController extends Controller
             ->setContent($content)
             ->search();
 
-        // Return the search results as a response
-        return response()->json($tickets);
+        return response()->json([
+            'data' => $tickets,
+        ], 200);
     }
 }

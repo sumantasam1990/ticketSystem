@@ -22,4 +22,23 @@ class TicketRepository extends AbstractRepository implements TicketRepositoryInt
     {
         return $this->model->whereIn('id', $ids)->get();
     }
+
+    public function search(array $criteria): Collection
+    {
+        $query = $this->model->query();
+
+        $query->when(!empty($criteria['ids']), function ($q) use ($criteria) {
+            $q->whereIn('id', $criteria['ids']);
+        });
+
+        $query->when(!empty($criteria['title']), function ($q) use ($criteria) {
+            $q->where('title', 'like', "%{$criteria['title']}%");
+        });
+
+        $query->when(!empty($criteria['content']), function ($q) use ($criteria) {
+            $q->where('content', 'like', "%{$criteria['content']}%");
+        });
+
+        return $query->get();
+    }
 }

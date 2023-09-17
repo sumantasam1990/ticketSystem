@@ -9,4 +9,5 @@ interface TicketRepositoryInterface
 {
     public function getAllTickets(Ticket $ticket): Collection;
     public function getTicketById(array $ids): Collection;
+    public function search(array $criteria): Collection;
 }

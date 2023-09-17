@@ -13,8 +13,8 @@ class TicketService implements TicketServiceInterface
 {
     protected TicketRepositoryInterface $ticketRepository;
     protected array $ids;
-    protected $title = '';
-    protected $content = '';
+    protected string $title;
+    protected string $content;
 
     public function setIds(array $ids): TicketServiceInterface
     {
@@ -65,22 +65,20 @@ class TicketService implements TicketServiceInterface
 
     public function search(): Collection
     {
-        // Start with a base query
-        $query = Ticket::query();
+        $criteria = [
+            'ids' => $this->ids,
+            'title' => $this->title,
+            'content' => $this->content,
+        ];
 
-        // Use the `when` method to conditionally apply query constraints
-        $query->when(!empty($this->ids), function ($q) {
-            return $q->whereIn('id', $this->ids);
+        // Delegate the search to the repository
+        $tickets = $this->ticketRepository->search($criteria);
+        return $tickets->map(function ($ticket) {
+            $ticketDTO = new TicketDTO();
+            $ticketDTO->id = $ticket->id;
+            $ticketDTO->setTitle($ticket->title);
+            $ticketDTO->wordTransform($ticket->content);
+            return $ticketDTO;
         });
-
-        $query->when(!empty($this->title), function ($q) {
-            return $q->where('title', 'like', "%{$this->title}%");
-        });
-
-        $query->when(!empty($this->content), function ($q) {
-            return $q->where('content', 'like', "%{$this->content}%");
-        });
-
-        return $query->get();
     }
 }
