@@ -1,0 +1,11 @@
+{
+    "name": "TicketSystem",
+    "alias": "ticketsystem",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\TicketSystem\\Providers\\TicketSystemServiceProvider"
+    ],
+    "files": []
+}
