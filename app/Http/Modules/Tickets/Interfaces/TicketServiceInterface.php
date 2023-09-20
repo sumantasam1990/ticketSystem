@@ -10,4 +10,6 @@ interface TicketServiceInterface
     public function getAllTickets(Ticket $ticket):Collection;
     public function getTicketById(): Collection;
     public function search(): Collection;
+
+    public function add(): Ticket;
 }

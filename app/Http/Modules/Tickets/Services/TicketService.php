@@ -81,4 +81,9 @@ class TicketService implements TicketServiceInterface
             return $ticketDTO;
         });
     }
+
+    public function add(): Ticket
+    {
+        // TODO: Implement add() method.
+    }
 }
